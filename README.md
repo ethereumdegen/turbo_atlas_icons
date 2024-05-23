@@ -62,8 +62,12 @@ impl UiIconSource for GuiPixelIconSource {
 
 ```
 
-   ui_icon_comp.icon_source = Some(Box::new( GuiPixelIconSource("soul_point_full.tga".into() ) ) );
+   commands.entity(icon_node).insert(  
+ 		UiIconComponent{
+ 			icon_source : Some(Box::new( GuiPixelIconSource("heart_full.tga".into() ) ) 
 
+ 		}
+   	); 
 
 
 ```
