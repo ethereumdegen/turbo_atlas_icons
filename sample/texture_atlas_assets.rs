@@ -3,6 +3,18 @@ use bevy::{prelude::*, utils::HashMap};
 use bevy_asset_loader::mapped::AssetFileName;
 
  
+/*
+
+
+//build  this yourself  !  In your own way 
+
+This is just an example file to show how you COULD load your TextureAtlasCombined objects to use in your Icon Source definitions 
+
+
+
+*/
+
+
 
 pub type TextureHandlesMap = HashMap<AssetFileName,Handle<Image>>;
 
@@ -10,7 +22,7 @@ pub type TextureHandlesMap = HashMap<AssetFileName,Handle<Image>>;
 pub type AtlasName = String ; 
 
 
-//build  this yourself  !  In your own way 
+
  
 
  

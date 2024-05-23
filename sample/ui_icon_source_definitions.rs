@@ -27,9 +27,7 @@ impl UiIconSource for AbilityTypeIconSource {
         &texture_atlas_assets.ability_icons_atlas
     }
 
-    fn get_dynamic_icon_dimensions(&self, world: &World) ->  Option< [u32;2] > {
-    	None
-    }
+     
 }
 
 impl UiIconSource for ItemTypeIconSource {
@@ -59,24 +57,7 @@ impl UiIconSource for ItemTypeIconSource {
 		&texture_atlas_assets.item_icons_atlas
     }
 
-     fn get_dynamic_icon_dimensions(&self, world: &World) -> Option< [u32;2] > {
-    	 let item_types = world.resource::<Assets<ItemType>>();
-        let item_system_type_assets = world.resource::<ItemSystemTypeAssets>();
-
-        if let Some(item_type_handle) = item_system_type_assets.item_types.get(self.0.as_str()) {
-            if let Some(item_type) = item_types.get(item_type_handle) {
-                  if let Some(rows_cols_dims) = &item_type.inventory_container_dimensions {
-                        let rows_cols = rows_cols_dims.clone();
-                          Some(rows_cols) 
-                    } else { None }
-            } else {   None }
-        } else {
-            None
-        }
-
-
-
-    }
+     
 
 }
 
@@ -96,7 +77,5 @@ impl UiIconSource for GuiPixelIconSource {
 		&texture_atlas_assets.gui_pixel_icons_atlas
     }
 
-      fn get_dynamic_icon_dimensions(&self, world: &World) ->  Option< [u32;2] > {
-    	None
-    }
+      
 }
