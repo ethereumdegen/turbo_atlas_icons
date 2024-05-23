@@ -70,3 +70,5 @@ impl UiIconSource for GuiPixelIconSource {
 
 
 3. Your icon will render ! 
+
+(This is all assuming the TextureAtlasCombined provided to the IconSource lookup has already been loaded into memory --- see sample/texture_atlas_assets for examples of how this could be done  -- For example using bevy_asset_loader )
