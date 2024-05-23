@@ -1,6 +1,15 @@
+ 
 use crate::texture_atlas_combined::TextureAtlasCombined;
-use crate::texture_atlas_combined::TextureHandlesMap;
+use bevy_asset_loader::prelude::AssetFileName;
+use bevy::utils::HashMap;
 use bevy::prelude::*;
+
+pub type TextureHandlesMap = HashMap<AssetFileName,Handle<Image>>;
+
+
+pub type AtlasName = String ; 
+
+
 
 pub trait UiIconSource {
     fn get_icon_name(&self, world: &World) -> Option<String>;

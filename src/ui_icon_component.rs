@@ -1,4 +1,6 @@
-use crate::texture_atlas_combined::get_index_for_subtexture_by_name;
+ 
+use bevy::utils::HashMap;
+use bevy_asset_loader::prelude::AssetFileName;
 use crate::ui_icon_source::UiIconSource;
 use bevy::ecs::system::EntityCommand;
 use bevy::ecs::system::EntityCommands;
@@ -121,6 +123,27 @@ fn update_icons_from_source(
 }
 
 
+// helper fn 
+
+
+
+pub fn get_index_for_subtexture_by_name(
+    texture_atlas_handle: &Handle<TextureAtlasLayout>,
+    texture_atlases: & Assets<TextureAtlasLayout> ,
+
+    image_handles_map: &HashMap<AssetFileName, Handle<Image>>,
+    texture_name: &String,
+) -> Option<usize> {
+    if let Some(atlas) = texture_atlases.get(texture_atlas_handle) {
+        if let Some(image_handle) = image_handles_map.get(texture_name.as_str()) {
+            return atlas.get_texture_index(image_handle);
+        }
+    }
+    //self.index_registry.get(texture_name) .copied() //why do we need to do plus 1 ?
+    None
+}
+
+
 
 
 
@@ -234,3 +257,4 @@ impl<'a> SetAtlasTextureIndexExt<'a> for EntityCommands<'a> {
         self
     }
 }
+
