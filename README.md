@@ -12,6 +12,16 @@ A crate for bevy to help you more easily render ui icons from an atlas.
 
 Simply add a UiIconComponent to your Ui Node (AtlasImageBundle), set its source to a pre-registered source, and it will work! 
 
+0.  Install the plugin 
+
+```
+
+
+ app.insert_plugins( TurboAtlasIconsPlugin )
+
+
+```
+
 
 
 1. Register an icon source type   (maps the source type -> how to access the texture atlas data ) 
