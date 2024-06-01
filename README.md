@@ -30,7 +30,7 @@ Simply add a UiIconComponent to your Ui Node (AtlasImageBundle), set its source 
 
 
 
-
+pub struct GuiPixelIconSource(String) ;   // This is your own source type that you invent !!  Can invent many. 
 
 impl UiIconSource for GuiPixelIconSource {
 
