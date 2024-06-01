@@ -15,6 +15,7 @@ pub trait UiIconSource {
     fn get_icon_name(&self, world: &World) -> Option<String>;
     fn get_icons_handles_map<'a>(&'a self, world: &'a World) -> &'a TextureHandlesMap;
     fn get_texture_atlas<'a>(&'a self, world: &'a World) ->  &'a Option<TextureAtlasCombined>;
+    //fn updates_dynamically(&self) -> bool;
 
     //fn get_dynamic_icon_dimensions(&self, world: &World) ->  Option< [u32;2] > ;
 }

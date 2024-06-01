@@ -75,8 +75,9 @@ fn update_icons_from_source(
         (
             Entity,
             &UiIconComponent,
+            &ViewVisibility
         ),
-        Changed<UiIconComponent>,
+        With<UiIconComponent>,
     >,
 
    
@@ -86,10 +87,12 @@ fn update_icons_from_source(
     let texture_atlases = world.resource::< Assets<TextureAtlasLayout> >();
 
    
-   for ( entity, ui_icon_comp) in image_node_entity_query.iter ()
+   for ( entity, ui_icon_comp, view_vis) in image_node_entity_query.iter ()
     { 
 
-       
+        if view_vis == &ViewVisibility::HIDDEN {continue};
+
+        
 
         let Some( ref ui_icon_src ) = ui_icon_comp.icon_source  else {continue} ;
 
