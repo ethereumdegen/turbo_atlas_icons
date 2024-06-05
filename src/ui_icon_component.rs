@@ -23,7 +23,7 @@ use crate::ui::ui_data_sources::ui_icon_source::{UiIconSource};
 
 pub(crate) fn ui_icons_plugin(app: &mut App) {
     app.add_systems(
-        PostUpdate,
+        Update,
         update_icons_from_source
         .run_if(any_with_component::<UiIconComponent>)
         .in_set( DynamicIconSourcesSystemSet ) ,
