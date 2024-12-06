@@ -7,12 +7,12 @@ authors = [ "ethereumdegen" ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/ethereumdegen/turbo_atlas_icons"
-version = "0.14.1"
+version = "0.15.0"
 edition = "2021"
 
 [dependencies]
- bevy = { version = "0.14" , features = [ "jpeg", "tga", "serialize"  ] }
- bevy_asset_loader = { version = "0.21", features = ["progress_tracking","2d","standard_dynamic_assets"] }
+ bevy = { version = "0.15" , features = [ "jpeg", "tga", "serialize"  ] }
+ bevy_asset_loader = { version = "0.22", features = ["progress_tracking","2d","standard_dynamic_assets"] }
 
  
  # sickle_ui = { git = "https://github.com/UmbraLuminosa/sickle_ui" }

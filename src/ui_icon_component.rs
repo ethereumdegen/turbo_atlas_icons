@@ -1,4 +1,5 @@
  
+use crate::texture_atlas_combined::TextureAtlasCombined;
 use bevy::utils::HashMap;
 use bevy_asset_loader::prelude::AssetFileName;
 use crate::ui_icon_source::UiIconSource;
@@ -64,7 +65,7 @@ pub trait UiIconComponentCommands<'a> {
 
 impl<'a> UiIconComponentCommands<'a> for EntityCommands<'a> {
     fn set_icon_source(&'a mut self, src: Option<Box<dyn UiIconSource  + Sync + Send + 'static>>) -> &mut EntityCommands<'a> {
-        self.add(SetIconSource(src))
+        self.queue(SetIconSource(src))
     }
 }
  
@@ -106,8 +107,8 @@ fn update_icons_from_source(
        
 
         let Some(image_index) = get_index_for_subtexture_by_name(
-            &texture_atlas.layout,
-            texture_atlases,
+            &texture_atlas ,
+          //   texture_atlases,
             &icons_handles_map,
             &icon_name,
         ) else {
@@ -131,17 +132,17 @@ fn update_icons_from_source(
 
 
 pub fn get_index_for_subtexture_by_name(
-    texture_atlas_handle: &Handle<TextureAtlasLayout>,
-    texture_atlases: & Assets<TextureAtlasLayout> ,
+    texture_atlas_combined: &TextureAtlasCombined,
+ //   texture_atlases: & Assets<TextureAtlasLayout> ,
 
     image_handles_map: &HashMap<AssetFileName, Handle<Image>>,
     texture_name: &String,
 ) -> Option<usize> {
-    if let Some(atlas) = texture_atlases.get(texture_atlas_handle) {
+    //if let Some(atlas) = texture_atlases.get(texture_atlas_handle) {
         if let Some(image_handle) = image_handles_map.get(texture_name.as_str()) {
-            return atlas.get_texture_index(image_handle);
+            return texture_atlas_combined.get_texture_index(image_handle);
         }
-    }
+    //}
     //self.index_registry.get(texture_name) .copied() //why do we need to do plus 1 ?
     None
 }
@@ -163,7 +164,7 @@ impl EntityCommand for SetAtlasTextureImage {
 
         let handle = self.image_handle; 
 
-        let Some(mut image) = world.get_mut::<UiImage>(entity) else {
+        let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
                 "Failed to set image on entity {:?}: No UiImage component found!",
                 entity
@@ -171,8 +172,8 @@ impl EntityCommand for SetAtlasTextureImage {
             return;
         };
 
-        if image.texture != handle {
-            image.texture = handle;
+        if image_node.image  != handle {
+            image_node.image = handle;
         }
     }
 }
@@ -185,7 +186,7 @@ pub trait SetAtlasTextureImageExt<'a> {
 
 impl<'a> SetAtlasTextureImageExt<'a> for EntityCommands<'a> {
     fn atlas_texture_image(&'a mut self, image_handle: Handle<Image> ) -> &mut EntityCommands<'a> {
-        self.add(SetAtlasTextureImage {
+        self.queue(SetAtlasTextureImage {
             image_handle
             // check_lock: true,
         });
@@ -203,7 +204,7 @@ impl EntityCommand for SetAtlasTextureLayout {
     fn apply(self, entity: Entity, world: &mut World) {
         let layout = self.layout;
 
-        let Some(mut texture_atlas) = world.get_mut::<TextureAtlas>(entity) else {
+        let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
                 "Failed to set texture atlas layout on entity {:?}: No TextureAtlas component found!",
                 entity
@@ -211,8 +212,12 @@ impl EntityCommand for SetAtlasTextureLayout {
             return;
         };
 
+        let Some(ref mut texture_atlas) = &mut image_node.texture_atlas else {
+            return;
+        };
+
        // if texture_atlas.layout != layout {
-            texture_atlas.layout = layout;
+             texture_atlas.layout = layout;
        // }
     }
 }
@@ -223,7 +228,7 @@ pub trait SetAtlasTextureLayoutExt<'a> {
 
 impl<'a> SetAtlasTextureLayoutExt<'a> for EntityCommands<'a> {
     fn atlas_texture_layout(&'a mut self, layout: Handle<TextureAtlasLayout>) -> &mut EntityCommands<'a> {
-        self.add(SetAtlasTextureLayout { layout });
+        self.queue(SetAtlasTextureLayout { layout });
         self
     }
 }
@@ -236,7 +241,7 @@ impl EntityCommand for SetAtlasTextureIndex {
     fn apply(self, entity: Entity, world: &mut World) {
         let index = self.index;
 
-        let Some(mut texture_atlas) = world.get_mut::<TextureAtlas>(entity) else {
+        let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
                 "Failed to set texture atlas index on entity {:?}: No TextureAtlas component found!",
                 entity
@@ -244,8 +249,12 @@ impl EntityCommand for SetAtlasTextureIndex {
             return;
         };
 
-        if texture_atlas.index != index {
-            texture_atlas.index = index;
+         let Some(ref mut texture_atlas) = &mut image_node.texture_atlas else {
+            return;
+        };
+
+        if  texture_atlas.index != index {
+             texture_atlas.index = index;
         }
     }
 }
@@ -256,7 +265,7 @@ pub trait SetAtlasTextureIndexExt<'a> {
 
 impl<'a> SetAtlasTextureIndexExt<'a> for EntityCommands<'a> {
     fn atlas_texture_index(&'a mut self, index: usize) -> &mut EntityCommands<'a> {
-        self.add(SetAtlasTextureIndex { index });
+        self.queue(SetAtlasTextureIndex { index });
         self
     }
 }
