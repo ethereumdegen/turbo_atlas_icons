@@ -172,7 +172,9 @@ impl EntityCommand for SetAtlasTextureImage {
             return;
         };
 
-        if image_node.image  != handle {
+
+
+      if image_node.image  != handle {
             image_node.image = handle;
         }
     }
@@ -204,21 +206,26 @@ impl EntityCommand for SetAtlasTextureLayout {
     fn apply(self, entity: Entity, world: &mut World) {
         let layout = self.layout;
 
-        let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
+      let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
                 "Failed to set texture atlas layout on entity {:?}: No TextureAtlas component found!",
                 entity
             );
             return;
-        };
+        }; 
+ 
 
-        let Some(ref mut texture_atlas) = &mut image_node.texture_atlas else {
-            return;
-        };
 
-       // if texture_atlas.layout != layout {
-             texture_atlas.layout = layout;
-       // }
+        if let Some( ref mut  existing_tex_atlas)  = & mut image_node.texture_atlas {
+
+               existing_tex_atlas.layout = layout;
+        }else {
+
+             image_node.texture_atlas = Some(TextureAtlas{ layout, index: 0})
+        }
+
+       
+ 
     }
 }
 
@@ -241,15 +248,19 @@ impl EntityCommand for SetAtlasTextureIndex {
     fn apply(self, entity: Entity, world: &mut World) {
         let index = self.index;
 
-        let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
+         let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
                 "Failed to set texture atlas index on entity {:?}: No TextureAtlas component found!",
                 entity
             );
             return;
-        };
+        }; 
 
          let Some(ref mut texture_atlas) = &mut image_node.texture_atlas else {
+            warn!(
+                "Failed to set texture atlas index on entity {:?}: No TextureAtlas component found!",
+                entity
+            );
             return;
         };
 
