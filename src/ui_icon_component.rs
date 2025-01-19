@@ -11,20 +11,14 @@ use bevy::prelude::*;
 
 
 /*
-use crate::file_system_interaction::{
-    ability_type::AbilityType,
-    asset_loading::{AbilitySystemTypeAssets, ItemSystemTypeAssets, TextureAssets},
-    item_type::ItemType,
-    texture_atlas::{get_index_for_subtexture_by_name, TextureAtlasAssets},
-};
+ 
 
 
-use crate::ui::ui_data_sources::ui_icon_source::{UiIconSource};
 */
 
 pub(crate) fn ui_icons_plugin(app: &mut App) {
     app.add_systems(
-        Update,
+        PostUpdate,
         update_icons_from_source
         .run_if(any_with_component::<UiIconComponent>)
         .in_set( DynamicIconSourcesSystemSet ) ,
@@ -85,13 +79,14 @@ fn update_icons_from_source(
     world: &World, 
 ) {
     
-    let texture_atlases = world.resource::< Assets<TextureAtlasLayout> >();
+    let _texture_atlases = world.resource::< Assets<TextureAtlasLayout> >();
 
    
-   for ( entity, ui_icon_comp, view_vis) in image_node_entity_query.iter ()
+   for ( entity, ui_icon_comp, _view_vis) in image_node_entity_query.iter ()
     { 
 
-        if view_vis == &ViewVisibility::HIDDEN {continue};
+        //this broke icons in tooltips.. sigh 
+       // if view_vis == &ViewVisibility::HIDDEN {continue};
 
         
 
@@ -108,7 +103,7 @@ fn update_icons_from_source(
 
         let Some(image_index) = get_index_for_subtexture_by_name(
             &texture_atlas ,
-          //   texture_atlases,
+           
             &icons_handles_map,
             &icon_name,
         ) else {
