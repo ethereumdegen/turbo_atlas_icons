@@ -1,6 +1,6 @@
  
 use crate::texture_atlas_combined::TextureAtlasCombined;
-use bevy::utils::HashMap;
+use  bevy::platform_support::collections::hash_map::HashMap;
 use bevy_asset_loader::prelude::AssetFileName;
 use crate::ui_icon_source::UiIconSource;
 use bevy::ecs::system::EntityCommand;
@@ -45,7 +45,14 @@ impl UiIconComponent {
 struct SetIconSource(Option<Box<dyn UiIconSource + Sync + Send + 'static>>);
 
 impl EntityCommand for SetIconSource {
-    fn apply(self, entity: Entity, world: &mut World) {
+    fn apply(self,  entity_world: EntityWorldMut ) {
+
+
+         let entity = entity_world.id();  
+        let world  = entity_world.into_world_mut() ;
+
+        
+        
         if let Some(mut ui_icon_comp) = world.entity_mut(entity).get_mut::<UiIconComponent>() {
             ui_icon_comp.icon_source = self.0;
         }
@@ -154,10 +161,13 @@ struct SetAtlasTextureImage {
 
 
 impl EntityCommand for SetAtlasTextureImage {
-    fn apply(self, entity: Entity, world: &mut World) {
+    fn apply(self,   entity_world: EntityWorldMut) {
        
 
         let handle = self.image_handle; 
+
+        let entity = entity_world.id();  
+        let world  = entity_world.into_world_mut() ;
 
         let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
@@ -198,8 +208,13 @@ struct SetAtlasTextureLayout {
 }
 
 impl EntityCommand for SetAtlasTextureLayout {
-    fn apply(self, entity: Entity, world: &mut World) {
+    fn apply(self,  entity_world: EntityWorldMut ) {
         let layout = self.layout;
+
+        let entity = entity_world.id();  
+        let world  = entity_world.into_world_mut() ;
+
+
 
       let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
@@ -211,7 +226,7 @@ impl EntityCommand for SetAtlasTextureLayout {
  
 
 
-        if let Some( ref mut  existing_tex_atlas)  = & mut image_node.texture_atlas {
+        if let Some( existing_tex_atlas)  = & mut image_node.texture_atlas {
 
                existing_tex_atlas.layout = layout;
         }else {
@@ -240,8 +255,13 @@ struct SetAtlasTextureIndex {
 }
 
 impl EntityCommand for SetAtlasTextureIndex {
-    fn apply(self, entity: Entity, world: &mut World) {
+    fn apply(self,  entity_world: EntityWorldMut ) {
         let index = self.index;
+
+         let entity = entity_world.id();  
+        let world  = entity_world.into_world_mut() ;
+
+
 
          let Some(mut image_node) = world.get_mut::<ImageNode>(entity) else {
             warn!(
@@ -251,7 +271,7 @@ impl EntityCommand for SetAtlasTextureIndex {
             return;
         }; 
 
-         let Some(ref mut texture_atlas) = &mut image_node.texture_atlas else {
+         let Some(texture_atlas) = &mut image_node.texture_atlas else {
             warn!(
                 "Failed to set texture atlas index on entity {:?}: No TextureAtlas component found!",
                 entity

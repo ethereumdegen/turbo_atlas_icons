@@ -1,7 +1,7 @@
  
 use crate::texture_atlas_combined::TextureAtlasCombined;
 use bevy_asset_loader::prelude::AssetFileName;
-use bevy::utils::HashMap;
+use  bevy::platform_support::collections::hash_map::HashMap;
 use bevy::prelude::*;
 
 pub type TextureHandlesMap = HashMap<AssetFileName,Handle<Image>>;

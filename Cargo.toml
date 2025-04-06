@@ -7,11 +7,11 @@ authors = [ "ethereumdegen" ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/ethereumdegen/turbo_atlas_icons"
-version = "0.15.2"
-edition = "2021"
+version = "0.16.0"
+edition = "2024"
 
 [dependencies]
- bevy = { version = "0.15" , features = [ "jpeg", "tga", "serialize"  ] }
+ bevy = { version = "0.16.0-rc.2" , features = [ "jpeg", "tga", "serialize"  ] }
  bevy_asset_loader = { version = "0.22", features = ["progress_tracking","2d","standard_dynamic_assets"] }
 
  

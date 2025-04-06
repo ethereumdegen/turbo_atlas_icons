@@ -1,6 +1,7 @@
 //use crate::file_system_interaction::asset_loading::TextureAssets;
-use bevy::{prelude::*, utils::HashMap};
+use bevy::{prelude::*};
 use bevy_asset_loader::mapped::AssetFileName;
+use  bevy::platform_support::collections::hash_map::HashMap;
 
 pub struct TextureAtlasCombined {
     pub layout: Handle<TextureAtlasLayout>,
