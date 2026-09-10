@@ -45,6 +45,8 @@ impl UiIconComponent {
 struct SetIconSource(Option<Box<dyn UiIconSource + Sync + Send + 'static>>);
 
 impl EntityCommand for SetIconSource {
+    type Out = ();
+
     fn apply(self,  entity_world: EntityWorldMut ) {
 
 
@@ -161,6 +163,8 @@ struct SetAtlasTextureImage {
 
 
 impl EntityCommand for SetAtlasTextureImage {
+    type Out = ();
+
     fn apply(self,   entity_world: EntityWorldMut) {
        
 
@@ -208,6 +212,8 @@ struct SetAtlasTextureLayout {
 }
 
 impl EntityCommand for SetAtlasTextureLayout {
+    type Out = ();
+
     fn apply(self,  entity_world: EntityWorldMut ) {
         let layout = self.layout;
 
@@ -255,6 +261,8 @@ struct SetAtlasTextureIndex {
 }
 
 impl EntityCommand for SetAtlasTextureIndex {
+    type Out = ();
+
     fn apply(self,  entity_world: EntityWorldMut ) {
         let index = self.index;
 
